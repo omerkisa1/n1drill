@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+MSG_FILE="$1"
+
+sed -i '/^Co-authored-by:.*cursoragent@cursor\.com/d' "$MSG_FILE"
+sed -i '/^Co-authored-by: Cursor /d' "$MSG_FILE"
+sed -i '/^Made-with: Cursor/d' "$MSG_FILE"
