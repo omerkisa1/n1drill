@@ -250,3 +250,6 @@ docs/_build/
 
 project-base.md
 plan.md
+
+# Manuel doğrulama/test görev notları (gerçek VM'lerde şahsen çalıştırılır)
+tasks/
