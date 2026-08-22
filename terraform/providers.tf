@@ -1,0 +1,20 @@
+terraform {
+
+  required_providers {
+    openstack = {
+      source  = "terraform-provider-openstack/openstack"
+      version = "~> 1.53.0"
+
+    }
+  }
+}
+
+provider "openstack" {
+  auth_url                      = "https://tr-ist-01-apigw.portvmind.com/v3"
+  application_credential_id     = var.portvmind_application_credential_id
+  application_credential_secret = var.portvmind_application_credential_secret
+  tenant_id                     = var.tenant_id
+  region                        = "tr-ist-01"
+}
+
+
