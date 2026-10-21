@@ -23,3 +23,14 @@
     mode: "0600"
   notify: restart rke2-agent
   tags: ["0a028"]
+
+# Runs once per host in the `workers` group, so worker-1, worker-2, and
+# worker-3 all get enabled/started in the same play - no need to repeat
+# per-node commands like the old scripts/rke2-setup/bootstrap-agent.sh did.
+- name: 0a029 - enable and start rke2-agent
+  ansible.builtin.systemd:
+    name: rke2-agent
+    enabled: true
+    state: started
+  tags: ["0a029", "0a030", "0a031"]
+
