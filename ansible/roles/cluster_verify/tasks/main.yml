@@ -19,3 +19,16 @@
     taint node n1-server node-role.kubernetes.io/control-plane=:NoSchedule --overwrite
   changed_when: true
   tags: ["0a033"]
+
+- name: 0a034 - record node capacity vs allocatable
+  ansible.builtin.command: >
+    /var/lib/rancher/rke2/bin/kubectl --kubeconfig /etc/rancher/rke2/rke2.yaml
+    get nodes -o custom-columns=NAME:.metadata.name,CPU_CAP:.status.capacity.cpu,CPU_ALLOC:.status.allocatable.cpu,MEM_CAP:.status.capacity.memory,MEM_ALLOC:.status.allocatable.memory,PODS:.status.allocatable.pods
+  register: n1drill_capacity
+  changed_when: false
+  tags: ["0a034"]
+
+- name: 0a034 - print the capacity table (paste it into docs/lab.md)
+  ansible.builtin.debug:
+    msg: "{{ n1drill_capacity.stdout_lines }}"
+  tags: ["0a034"]
