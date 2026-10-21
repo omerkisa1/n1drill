@@ -24,3 +24,30 @@
         - "n1drill.io/role=control-plane"
   notify: restart rke2-server
   tags: ["0a022"]
+
+- name: 0a023 - enable and start rke2-server
+  ansible.builtin.systemd:
+    name: rke2-server
+    enabled: true
+    state: started
+  tags: ["0a023"]
+
+- name: 0a025 - persist kubectl PATH and KUBECONFIG
+  ansible.builtin.blockinfile:
+    path: /root/.bashrc
+    marker: "# {mark} n1drill kubectl path"
+    block: |
+      export KUBECONFIG=/etc/rancher/rke2/rke2.yaml
+      export PATH=$PATH:/var/lib/rancher/rke2/bin
+  tags: ["0a025"]
+
+- name: 0a026 - read the node token
+  ansible.builtin.slurp:
+    src: /var/lib/rancher/rke2/server/node-token
+  register: n1drill_node_token_raw
+  tags: ["0a026"]
+
+- name: 0a026 - expose the node token to the agent play
+  ansible.builtin.set_fact:
+    n1drill_token: "{{ n1drill_node_token_raw.content | b64decode | trim }}"
+  tags: ["0a026"]
