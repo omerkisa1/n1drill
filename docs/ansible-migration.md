@@ -2,7 +2,7 @@
 
 The lab moved from manual per-node scripts (`scripts/vm-setup/`,
 `scripts/rke2-setup/`) to Terraform for provisioning. The remaining OS-level
-config and RKE2 install steps move to Ansible instead of SSH-ing into each
+config and RKE2 install steps moved to Ansible instead of SSH-ing into each
 node one by one.
 
 ## Already covered by Terraform (no Ansible needed)
@@ -12,39 +12,21 @@ node one by one.
 - `0A.014` — SSH key (via `keypair.tf`)
 - `0A.019` / `0A.020` — port access, handled at the security group level
 
-## Moving to Ansible
+## Covered by Ansible
 
-| Role          | Plan steps      | Hosts        |
-|---------------|------------------|--------------|
-| `base`        | 0A.013, 0A.015–018 | all 4 nodes |
-| `rke2_server` | 0A.021–026       | n1-server    |
-| `rke2_agent`  | 0A.027–031       | all workers  |
+| Role             | Plan steps         | Hosts        |
+|------------------|---------------------|--------------|
+| `base`           | 0A.013, 0A.015–018 | all 4 nodes  |
+| `rke2_server`    | 0A.021–026         | n1-server    |
+| `rke2_agent`     | 0A.027–031         | all workers  |
+| `cluster_verify` | 0A.032–034         | n1-server    |
 
 Each task is tagged with its plan step id (e.g. `0a016`), so a single step
-can still be run and reviewed in isolation:
-
-```bash
-ansible-playbook site.yml --tags 0a016 --check --diff
-# or
-ansible-playbook site.yml --step
-```
-
-## Planned layout
-
-```
-ansible/
-  ansible.cfg
-  inventory/
-    hosts.ini          # [server] n1-server, [workers] n1-worker-1/2/3
-  roles/
-    base/tasks/main.yml
-    rke2_server/tasks/main.yml
-    rke2_agent/tasks/main.yml
-  site.yml
-```
+can still be run and reviewed in isolation — see `ansible/README.md` for
+exact commands (`--tags`, `--step`).
 
 ## Status
 
-Design only — not implemented yet. The existing scripts under
-`scripts/vm-setup/` and `scripts/rke2-setup/` stay as reference for the
-exact commands each Ansible task should run.
+Implemented. `scripts/vm-setup/` and `scripts/rke2-setup/` stay in the repo
+as the reference these roles were written from, but the playbook under
+`ansible/` is now the way 0A.013–0A.034 actually get applied.
