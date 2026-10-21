@@ -1,0 +1,26 @@
+---
+- name: 0a021 - install rke2 server
+  ansible.builtin.shell: curl -sfL https://get.rke2.io | sh -
+  args:
+    creates: /usr/local/bin/rke2
+  tags: ["0a021"]
+
+- name: 0a022 - create rancher config directory
+  ansible.builtin.file:
+    path: /etc/rancher/rke2
+    state: directory
+    mode: "0755"
+  tags: ["0a022"]
+
+- name: 0a022 - write rke2 server config
+  ansible.builtin.copy:
+    dest: /etc/rancher/rke2/config.yaml
+    content: |
+      write-kubeconfig-mode: "0644"
+      tls-san:
+        - {{ ansible_host }}
+        - n1-server
+      node-label:
+        - "n1drill.io/role=control-plane"
+  notify: restart rke2-server
+  tags: ["0a022"]
