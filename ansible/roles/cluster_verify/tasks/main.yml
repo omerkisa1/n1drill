@@ -1,0 +1,21 @@
+---
+- name: 0a032 - wait until all 4 nodes are Ready
+  ansible.builtin.command: >
+    /var/lib/rancher/rke2/bin/kubectl --kubeconfig /etc/rancher/rke2/rke2.yaml
+    get nodes -o jsonpath={.items[*].status.conditions[?(@.type=="Ready")].status}
+  register: n1drill_node_readiness
+  until: >
+    n1drill_node_readiness.stdout.split() | length == groups['rke2'] | length
+    and 'False' not in n1drill_node_readiness.stdout.split()
+    and 'Unknown' not in n1drill_node_readiness.stdout.split()
+  retries: 30
+  delay: 10
+  changed_when: false
+  tags: ["0a032"]
+
+- name: 0a033 - taint the control-plane node
+  ansible.builtin.command: >
+    /var/lib/rancher/rke2/bin/kubectl --kubeconfig /etc/rancher/rke2/rke2.yaml
+    taint node n1-server node-role.kubernetes.io/control-plane=:NoSchedule --overwrite
+  changed_when: true
+  tags: ["0a033"]
