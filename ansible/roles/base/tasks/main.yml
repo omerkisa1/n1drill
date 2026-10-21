@@ -1,0 +1,16 @@
+---
+- name: 0a013 - sync /etc/hosts across all lab nodes
+  ansible.builtin.blockinfile:
+    path: /etc/hosts
+    marker: "# {mark} n1drill lab hosts"
+    block: |
+      {% for host in groups['rke2'] %}
+      {{ hostvars[host].ansible_host }} {{ host }}
+      {% endfor %}
+  tags: ["0a013"]
+
+- name: 0a015 - refresh apt cache and upgrade packages
+  ansible.builtin.apt:
+    update_cache: true
+    upgrade: dist
+  tags: ["0a015"]
