@@ -1,0 +1,20 @@
+---
+- name: Base OS configuration for all n1drill nodes
+  hosts: rke2
+  roles:
+    - base
+
+- name: RKE2 server bootstrap
+  hosts: server
+  roles:
+    - rke2_server
+
+- name: RKE2 agents join
+  hosts: workers
+  roles:
+    - rke2_agent
+
+- name: Cluster verification and policy
+  hosts: server
+  roles:
+    - cluster_verify

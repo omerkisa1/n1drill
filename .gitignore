@@ -144,7 +144,8 @@ docs/experiments/raw/
 *.tfvars
 !*.tfvars.example
 .ansible/
-ansible/inventory/hosts
+ansible/inventory/hosts.ini
+!ansible/inventory/hosts.ini.example
 ansible/*.retry
 .helm/
 charts/*.tgz
