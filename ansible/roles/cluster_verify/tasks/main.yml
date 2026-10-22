@@ -32,3 +32,15 @@
   ansible.builtin.debug:
     msg: "{{ n1drill_capacity.stdout_lines }}"
   tags: ["0a034"]
+
+# RKE2 ships local-path-provisioner out of the box. If it's missing for some
+# reason, apply the upstream manifest before moving on - everything in
+# experiments/03-jenkins-statefulset.yaml depends on this StorageClass existing.
+- name: 0a039 - verify the local-path StorageClass exists
+  ansible.builtin.command: >
+    /var/lib/rancher/rke2/bin/kubectl --kubeconfig /etc/rancher/rke2/rke2.yaml
+    get storageclass local-path -o jsonpath={.volumeBindingMode}
+  register: n1drill_storageclass
+  changed_when: false
+  failed_when: n1drill_storageclass.stdout != "WaitForFirstConsumer"
+  tags: ["0a039"]
