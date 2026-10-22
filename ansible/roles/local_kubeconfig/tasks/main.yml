@@ -30,3 +30,12 @@
     replace: "n1drill-lab"
   delegate_to: localhost
   tags: ["0a037"]
+
+- name: 0a038 - verify access to all 4 nodes from the dev machine
+  ansible.builtin.command: >
+    kubectl --kubeconfig {{ lookup('env', 'HOME') }}/.kube/n1drill-lab.yaml get nodes -o name
+  delegate_to: localhost
+  register: n1drill_local_nodes
+  changed_when: false
+  failed_when: n1drill_local_nodes.stdout_lines | length != groups['rke2'] | length
+  tags: ["0a038"]
