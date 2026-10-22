@@ -13,3 +13,20 @@
     replace: "{{ ansible_host }}"
   delegate_to: localhost
   tags: ["0a036"]
+
+- name: 0a037 - restrict kubeconfig permissions
+  ansible.builtin.file:
+    path: "{{ lookup('env', 'HOME') }}/.kube/n1drill-lab.yaml"
+    mode: "0600"
+  delegate_to: localhost
+  tags: ["0a037"]
+
+# RKE2 ships this file with a single "default" cluster/context/user - renaming
+# all three to n1drill-lab keeps it from colliding with other clusters later.
+- name: 0a037 - rename the default context to n1drill-lab
+  ansible.builtin.replace:
+    path: "{{ lookup('env', 'HOME') }}/.kube/n1drill-lab.yaml"
+    regexp: "\\bdefault\\b"
+    replace: "n1drill-lab"
+  delegate_to: localhost
+  tags: ["0a037"]

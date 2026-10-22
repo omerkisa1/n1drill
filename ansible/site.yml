@@ -18,3 +18,8 @@
   hosts: server
   roles:
     - cluster_verify
+
+- name: Copy kubeconfig to the dev machine
+  hosts: server
+  roles:
+    - local_kubeconfig
