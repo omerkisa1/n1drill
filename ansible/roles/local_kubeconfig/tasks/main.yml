@@ -1,0 +1,15 @@
+---
+- name: 0a035 - fetch rke2 kubeconfig to the dev machine
+  ansible.builtin.fetch:
+    src: /etc/rancher/rke2/rke2.yaml
+    dest: "{{ lookup('env', 'HOME') }}/.kube/n1drill-lab.yaml"
+    flat: true
+  tags: ["0a035"]
+
+- name: 0a036 - point the local kubeconfig at the real server IP
+  ansible.builtin.replace:
+    path: "{{ lookup('env', 'HOME') }}/.kube/n1drill-lab.yaml"
+    regexp: "127\\.0\\.0\\.1"
+    replace: "{{ ansible_host }}"
+  delegate_to: localhost
+  tags: ["0a036"]
