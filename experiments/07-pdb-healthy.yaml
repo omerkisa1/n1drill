@@ -1,0 +1,13 @@
+# maxUnavailable: 1 against 3 replicas allows exactly one voluntary
+# eviction at a time - compare this against 06-pdb-locked.yaml's
+# ALLOWED DISRUPTIONS of 0 once both are applied.
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: crowded-app-healthy
+  namespace: n1drill-lab
+spec:
+  maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: crowded-app
