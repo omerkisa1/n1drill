@@ -1,0 +1,24 @@
+# Real Django isn't needed here - nginx is a stand-in. What matters for the
+# experiment is the replica count and the requests, not what's running.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: django-app
+  namespace: n1drill-lab
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: django-app
+  template:
+    metadata:
+      labels:
+        app: django-app
+    spec:
+      containers:
+        - name: django-app
+          image: nginx:1.27
+          resources:
+            requests:
+              cpu: 500m
+              memory: 512Mi
