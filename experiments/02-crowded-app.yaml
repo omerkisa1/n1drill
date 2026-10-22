@@ -1,0 +1,27 @@
+# Demonstrates replica stacking: `replicas: 3` reads as "spread and safe",
+# but nodeSelector pins all 3 to n1-worker-1. Real tolerance to a node loss
+# here is zero, not three.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: crowded-app
+  namespace: n1drill-lab
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: crowded-app
+  template:
+    metadata:
+      labels:
+        app: crowded-app
+    spec:
+      nodeSelector:
+        n1drill.io/size: large
+      containers:
+        - name: crowded-app
+          image: nginx:1.27
+          resources:
+            requests:
+              cpu: 250m
+              memory: 256Mi
