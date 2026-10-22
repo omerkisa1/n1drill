@@ -1,0 +1,16 @@
+# No Deployment, no ReplicaSet - no controller owns this pod. If its node
+# dies, it is gone for good, nothing recreates it. Almost nobody expects
+# this; it's one of the sharpest findings the tool needs to surface.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: bare-pod
+  namespace: n1drill-lab
+spec:
+  containers:
+    - name: bare-pod
+      image: nginx:1.27
+      resources:
+        requests:
+          cpu: 100m
+          memory: 128Mi

@@ -1,0 +1,24 @@
+# DaemonSet pods don't get rescheduled elsewhere - a naive tool might try to
+# "relocate" one during a drain and conclude it's stuck. It isn't stuck,
+# it's just not meant to move; the scheduler skips DaemonSet pods entirely.
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: node-agent
+  namespace: n1drill-lab
+spec:
+  selector:
+    matchLabels:
+      app: node-agent
+  template:
+    metadata:
+      labels:
+        app: node-agent
+    spec:
+      containers:
+        - name: node-agent
+          image: nginx:1.27
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
