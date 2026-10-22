@@ -1,0 +1,13 @@
+# minAvailable == replica count leaves zero allowed disruptions. This
+# blocks a voluntary drain forever - but has no effect on a crash, since
+# PDBs only govern voluntary evictions.
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: django-app-locked
+  namespace: n1drill-lab
+spec:
+  minAvailable: 3
+  selector:
+    matchLabels:
+      app: django-app
