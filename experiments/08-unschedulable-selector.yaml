@@ -1,0 +1,18 @@
+# None of the 4 lab nodes carry disktype=ssd, so this pod stays Pending
+# forever. Capture the exact `kubectl describe` sentence for this case -
+# Faz 6 will need to reproduce that wording.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: unschedulable-selector
+  namespace: n1drill-lab
+spec:
+  nodeSelector:
+    disktype: ssd
+  containers:
+    - name: unschedulable-selector
+      image: nginx:1.27
+      resources:
+        requests:
+          cpu: 100m
+          memory: 128Mi
