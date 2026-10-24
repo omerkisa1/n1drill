@@ -1,0 +1,24 @@
+---
+# All kubectl calls in this role run from the dev machine against the
+# kubeconfig local_kubeconfig produced, not on n1-server itself.
+
+- name: set the path to the local kubeconfig
+  ansible.builtin.set_fact:
+    n1drill_kubeconfig: "{{ lookup('env', 'HOME') }}/.kube/n1drill-lab.yaml"
+  tags: ["0b012", "0b018", "0b019", "0b020", "0b021", "0b022", "0b023"]
+
+- name: 0b012 - taint n1-worker-3 for the dedicated-db scenario
+  ansible.builtin.command: >
+    kubectl --kubeconfig {{ n1drill_kubeconfig }}
+    taint node n1-worker-3 n1drill.io/dedicated=db:NoSchedule --overwrite
+  delegate_to: localhost
+  changed_when: true
+  tags: ["0b012"]
+
+- name: 0b018 - apply all experiment workloads
+  ansible.builtin.command: >
+    kubectl --kubeconfig {{ n1drill_kubeconfig }}
+    apply -f {{ playbook_dir }}/../experiments/
+  delegate_to: localhost
+  changed_when: true
+  tags: ["0b018"]
