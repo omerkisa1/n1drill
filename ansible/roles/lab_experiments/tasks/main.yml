@@ -37,3 +37,21 @@
     (n1drill_pending_pods.stdout_lines | sort) !=
     (['fragmentation-probe', 'unschedulable-selector'] | sort)
   tags: ["0b019"]
+
+# These two are the first real fixtures - Faz 2's mapper tests run against
+# them, so they need to represent the actual lab state, not a toy cluster.
+- name: 0b020 - dump all nodes to a fixture file
+  ansible.builtin.shell: >
+    kubectl --kubeconfig {{ n1drill_kubeconfig }}
+    get nodes -o yaml > {{ playbook_dir }}/../tests/fixtures/live/nodes.yaml
+  delegate_to: localhost
+  changed_when: true
+  tags: ["0b020"]
+
+- name: 0b021 - dump all pods across all namespaces to a fixture file
+  ansible.builtin.shell: >
+    kubectl --kubeconfig {{ n1drill_kubeconfig }}
+    get pods -A -o yaml > {{ playbook_dir }}/../tests/fixtures/live/pods.yaml
+  delegate_to: localhost
+  changed_when: true
+  tags: ["0b021"]
