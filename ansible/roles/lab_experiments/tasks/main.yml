@@ -55,3 +55,25 @@
   delegate_to: localhost
   changed_when: true
   tags: ["0b021"]
+
+- name: 0b022 - dump pvcs, pvs, and storageclasses to fixture files
+  ansible.builtin.shell: >
+    kubectl --kubeconfig {{ n1drill_kubeconfig }}
+    get {{ item }} -A -o yaml > {{ playbook_dir }}/../tests/fixtures/live/{{ item }}s.yaml
+  loop:
+    - pvc
+    - pv
+    - sc
+  delegate_to: localhost
+  changed_when: true
+  tags: ["0b022"]
+
+# status.disruptionsAllowed is what Faz 7's own calculation gets checked
+# against, so this fixture has to be captured after 0B.018 applies both PDBs.
+- name: 0b023 - dump pod disruption budgets to a fixture file
+  ansible.builtin.shell: >
+    kubectl --kubeconfig {{ n1drill_kubeconfig }}
+    get pdb -A -o yaml > {{ playbook_dir }}/../tests/fixtures/live/pdbs.yaml
+  delegate_to: localhost
+  changed_when: true
+  tags: ["0b023"]
