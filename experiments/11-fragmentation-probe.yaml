@@ -1,0 +1,18 @@
+# The signature fixture for Faz 6: a request large enough that no single
+# node has that much free capacity, even though the sum across all nodes
+# does. Stays Pending by design (0B.019 checks for exactly that). If your
+# lab's real free capacity doesn't line up, adjust the cpu request here -
+# see docs/lab.md for the actual numbers per node.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: fragmentation-probe
+  namespace: n1drill-lab
+spec:
+  containers:
+    - name: fragmentation-probe
+      image: nginx:1.27
+      resources:
+        requests:
+          cpu: 1500m
+          memory: 256Mi
