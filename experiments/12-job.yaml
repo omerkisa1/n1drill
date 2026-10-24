@@ -1,0 +1,22 @@
+# Long-running Job with restartPolicy: OnFailure. Whether this gets
+# rescheduled elsewhere after a node loss depends on backoffLimit and
+# restartPolicy, not on a simple yes/no - worth measuring for real here
+# instead of hand-waving it as "it depends" like the MVP would.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: backup-job
+  namespace: n1drill-lab
+spec:
+  backoffLimit: 2
+  template:
+    spec:
+      restartPolicy: OnFailure
+      containers:
+        - name: backup-job
+          image: nginx:1.27
+          command: ["sleep", "3600"]
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
