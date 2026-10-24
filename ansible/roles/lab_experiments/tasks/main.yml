@@ -22,3 +22,18 @@
   delegate_to: localhost
   changed_when: true
   tags: ["0b018"]
+
+# Only unschedulable-selector (0B.011) and fragmentation-probe (0B.015) are
+# meant to be Pending. Anything else stuck here means the lab capacity plan
+# in docs/lab.md doesn't match reality - fix the node sizing, not this check.
+- name: 0b019 - verify only the two intentionally-unschedulable pods are Pending
+  ansible.builtin.command: >
+    kubectl --kubeconfig {{ n1drill_kubeconfig }}
+    -n n1drill-lab get pods -o jsonpath={range .items[?(@.status.phase=="Pending")]}{.metadata.name}{"\n"}{end}
+  delegate_to: localhost
+  register: n1drill_pending_pods
+  changed_when: false
+  failed_when: >
+    (n1drill_pending_pods.stdout_lines | sort) !=
+    (['fragmentation-probe', 'unschedulable-selector'] | sort)
+  tags: ["0b019"]
