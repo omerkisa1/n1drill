@@ -1,0 +1,21 @@
+# Tolerates the n1drill.io/dedicated=db:NoSchedule taint applied to
+# n1-worker-3 (0B.012). Uses `operator: Equal` here; the `Exists` variant
+# is noted for later - Faz 5 needs to support both forms.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: db-pod
+  namespace: n1drill-lab
+spec:
+  tolerations:
+    - key: n1drill.io/dedicated
+      operator: Equal
+      value: db
+      effect: NoSchedule
+  containers:
+    - name: db-pod
+      image: nginx:1.27
+      resources:
+        requests:
+          cpu: 100m
+          memory: 128Mi
