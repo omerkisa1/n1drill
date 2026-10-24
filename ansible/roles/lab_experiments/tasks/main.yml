@@ -77,3 +77,9 @@
   delegate_to: localhost
   changed_when: true
   tags: ["0b023"]
+
+- name: 0b024 - strip managedFields and check for leaked secrets
+  ansible.builtin.command: "{{ playbook_dir }}/../scripts/experiments/clean-fixtures.sh"
+  delegate_to: localhost
+  changed_when: true
+  tags: ["0b024"]
