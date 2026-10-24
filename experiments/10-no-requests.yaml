@@ -1,0 +1,21 @@
+# No resources.requests at all - the scheduler treats these as zero-cost.
+# This is the source of the "capacity math doesn't add up" finding: pods
+# like these don't show up in any allocatable-vs-used calculation.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: no-requests-app
+  namespace: n1drill-lab
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: no-requests-app
+  template:
+    metadata:
+      labels:
+        app: no-requests-app
+    spec:
+      containers:
+        - name: no-requests-app
+          image: nginx:1.27
