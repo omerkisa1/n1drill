@@ -23,3 +23,8 @@
   hosts: server
   roles:
     - local_kubeconfig
+
+- name: Apply lab experiment workloads and collect fixtures
+  hosts: server
+  roles:
+    - lab_experiments
