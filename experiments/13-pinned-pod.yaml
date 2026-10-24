@@ -1,0 +1,18 @@
+# spec.nodeName bypasses the scheduler entirely - this pod never goes
+# through binding logic, so it also never gets rescheduled if n1-worker-2
+# goes away. A fixed-size tool that only watches scheduling events would
+# miss this pod completely.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pinned-pod
+  namespace: n1drill-lab
+spec:
+  nodeName: n1-worker-2
+  containers:
+    - name: pinned-pod
+      image: nginx:1.27
+      resources:
+        requests:
+          cpu: 100m
+          memory: 128Mi
