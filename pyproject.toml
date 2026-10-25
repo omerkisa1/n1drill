@@ -18,7 +18,11 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "Topic :: System :: Clustering",
 ]
-dependencies = []
+dependencies = [
+    "kubernetes>=36.0.3",
+    "rich>=13.8",
+    "typer>=0.27",
+]
 
 [build-system]
 requires = ["uv_build>=0.12.5,<0.13.0"]
