@@ -44,6 +44,11 @@ disallow_any_explicit = false
 module = "kubernetes.*"
 ignore_missing_imports = true
 
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q --strict-markers"
+markers = ["live: requires a real cluster"]
+
 [dependency-groups]
 dev = [
     "hypothesis>=6.168.5",
