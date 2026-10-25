@@ -1,12 +1,23 @@
 [project]
 name = "n1drill"
 version = "0.1.0"
-description = "Add your description here"
+description = "Simulates Kubernetes node loss and drain scenarios to surface scheduling findings before they happen in production."
 readme = "README.md"
+license = "MIT"
 authors = [
     { name = "omerkisa1", email = "omereis.5555@gmail.com" }
 ]
-requires-python = ">=3.12"
+requires-python = ">=3.10"
+keywords = ["kubernetes", "scheduling", "chaos-engineering", "capacity-planning"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Intended Audience :: System Administrators",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: System :: Clustering",
+]
 dependencies = []
 
 [build-system]
