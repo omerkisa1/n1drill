@@ -16,5 +16,3 @@ provider "openstack" {
   tenant_id                     = var.tenant_id
   region                        = "tr-ist-01"
 }
-
-
