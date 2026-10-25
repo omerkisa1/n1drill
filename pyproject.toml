@@ -49,6 +49,13 @@ testpaths = ["tests"]
 addopts = "-q --strict-markers"
 markers = ["live: requires a real cluster"]
 
+[tool.coverage.run]
+source = ["src/n1drill"]
+branch = true
+
+[tool.coverage.report]
+fail_under = 85
+
 [dependency-groups]
 dev = [
     "hypothesis>=6.168.5",
