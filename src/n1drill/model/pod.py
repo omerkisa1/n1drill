@@ -3,6 +3,10 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from n1drill.model.toleration import Toleration
 
 
 @dataclass(frozen=True)
@@ -14,6 +18,7 @@ class Pod:
     cpu_request_millicores: int = 0
     memory_request_bytes: int = 0
     node_selector: dict[str, str] = field(default_factory=dict)
+    tolerations: tuple[Toleration, ...] = ()
 
     @property
     def has_controller(self) -> bool:
