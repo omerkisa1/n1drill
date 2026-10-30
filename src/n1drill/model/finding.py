@@ -3,9 +3,11 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import TYPE_CHECKING
 
-from n1drill.model.finding_code import FindingCode
-from n1drill.model.severity import Severity
+if TYPE_CHECKING:
+    from n1drill.model.finding_code import FindingCode
+    from n1drill.model.severity import Severity
 
 
 @dataclass(frozen=True)
